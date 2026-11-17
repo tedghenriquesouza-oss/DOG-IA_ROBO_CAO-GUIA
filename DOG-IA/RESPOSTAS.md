@@ -207,14 +207,5 @@ Alternativa mais simples: aumentar `DIST_DESVIO_DESCONHECIDO` de 58 para 80 px. 
 colisões, mas aumenta os alertas e o tempo médio, porque o robô passa a reagir mais cedo e
 com mais frequência.
 
----
 
-## Etapa bônus: roteiro
-1. **Vídeo (20–40 s)**: rode `python dog_ia_v2.py` e aperte **5** (tour Casa → Mercado → Casa,
-   ida e volta). Grave com **Win + Alt + R** (Xbox Game Bar) ou com o OBS.
-2. **LinkedIn**: postar o vídeo, marcar os colegas e o professor Flavio Santarelli e destacar
-   o objetivo social (veja o rascunho no README).
-3. **E-mail** para flavio.santarelli@pro.fecaf.com.br com o link do post, o link do GitHub e
-   o nome completo de todos os integrantes.
-4. **GitHub**: subir `dog_ia_v1.py`, `dog_ia_v2.py`, `RESPOSTAS.md`, `README.md` e os `.txt`
    do benchmark.
