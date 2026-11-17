@@ -36,11 +36,11 @@ Viagem **1 (Mercado)** saindo de Casa, com `python dog_ia_v2.py --viagem 1 --see
 
 ```
 [t=   0.00s] PARADO -> PLANEJANDO | destino 'Mercado' selecionado
-[t=   0.00s] PLANEJANDO -> NAVEGANDO | rota A* com 125 nós (custo 973), 1 travessia(s)
-[t=   3.92s] NAVEGANDO -> AGUARDANDO_SINAL | chegou ao meio-fio da faixa (semáforo: PEDESTRE)
-[t=   3.93s] AGUARDANDO_SINAL -> ATRAVESSANDO | fase PEDESTRE com 4.5s restantes > 2.44s e zona varrida livre
-[t=   5.80s] ATRAVESSANDO -> NAVEGANDO | travessia concluída: robô e tutor de volta à calçada
-[t=   9.02s] NAVEGANDO -> DESTINO_ALCANCADO | distância ao destino < 18 px
+[t=   0.00s] PLANEJANDO -> NAVEGANDO | rota A* com 115 nós (custo 1195), 1 travessia(s)
+[t=   4.05s] NAVEGANDO -> AGUARDANDO_SINAL | chegou ao meio-fio da faixa (semáforo: PEDESTRE)
+[t=   4.07s] AGUARDANDO_SINAL -> ATRAVESSANDO | fase PEDESTRE com 4.3s restantes > 2.44s e zona varrida livre
+[t=   5.93s] ATRAVESSANDO -> NAVEGANDO | travessia concluída: robô e tutor de volta à calçada
+[t=   8.70s] NAVEGANDO -> DESTINO_ALCANCADO | distância ao destino < 18 px
 ```
 
 ### 2.1 Estados, em ordem, e a condição de cada transição
@@ -48,16 +48,17 @@ Viagem **1 (Mercado)** saindo de Casa, com `python dog_ia_v2.py --viagem 1 --see
 | # | Transição | Condição que causou |
 |---|-----------|---------------------|
 | 1 | `PARADO → PLANEJANDO` | Tecla **1** escolheu o destino Mercado. |
-| 2 | `PLANEJANDO → NAVEGANDO` | O A\* achou uma rota no C-Space (125 nós, 1 travessia detectada na rota). |
+| 2 | `PLANEJANDO → NAVEGANDO` | O A\* achou uma rota no C-Space (115 nós, 1 travessia detectada na rota). |
 | 3 | `NAVEGANDO → AGUARDANDO_SINAL` | O robô chegou ao **ponto de espera no meio-fio** (último nó antes da pista). A barreira não deixa descer sem autorização. |
 | 4 | `AGUARDANDO_SINAL → ATRAVESSANDO` | Fase `PEDESTRE` **e** `tempo_restante > 2,44 s` **e** nenhuma zona varrida de veículo cruzando o corredor de travessia. |
 | 5 | `ATRAVESSANDO → NAVEGANDO` | O robô passou o último nó da pista **e** robô e tutor saíram da banda da avenida. |
 | 6 | `NAVEGANDO → DESTINO_ALCANCADO` | Distância ao destino < 18 px. |
 
 Observações:
-* Com a seed 1 o robô chegou ao meio-fio com o sinal de pedestre já aberto e 4,5 s
+* Com a seed 1 o robô chegou ao meio-fio com o sinal de pedestre já aberto e 4,3 s
   restantes, então esperou só um quadro. Com a seed 7 (`--viagem 1 --seed 7`) ele chega
-  durante o verde dos carros e fica **15 s em AGUARDANDO_SINAL** (de 3,92 s até 19,07 s).
+  no fim da fase de pedestre, com menos de 2,44 s restantes. Por isso não atravessa e fica
+  **15 s em AGUARDANDO_SINAL** (de 4,05 s até 19,07 s), esperando o próximo ciclo.
 * Se houver um obstáculo novo na calçada, aparece `NAVEGANDO ⇄ DESVIO_LOCAL`, e um
   `PLANEJANDO` extra depois de 3,5 s preso. Se aparecer um infrator,
   surge `FREIO_EMERGENCIA`.
@@ -158,21 +159,20 @@ desconhecidos** na calçada. O planejador não conhece esses obstáculos, só o 
 
 | Métrica | seed 1 | seed 7 |
 |---|---|---|
-| Taxa de sucesso | **20/20 (100 %)** | **19/20 (95 %)** |
-| Tempo médio por viagem (concluídas) | **12,93 s** | **11,83 s** |
-| Distância média | 774 px | 786 px |
-| Colisões | **5** | **2** |
-| Quase-colisões (folga < 12 px de veículo em movimento) | **0** | **0** |
-| Freios de emergência | 0 | 1 |
-| Alertas vermelhos (entradas em DESVIO_LOCAL) | 40 | 46 |
-| Replanejamentos A\* | 1 | 2 |
+| Taxa de sucesso | **20/20 (100 %)** | **20/20 (100 %)** |
+| Tempo médio por viagem | **11,07 s** | **16,14 s** |
+| Distância média | 770 px | 890 px |
+| Colisões | **6** | **5** |
+| Quase-colisões (folga < 12 px de veículo em movimento) | **1** | **0** |
+| Freios de emergência | 1 | 2 |
+| Alertas vermelhos (entradas em DESVIO_LOCAL) | 69 | 226 |
+| Replanejamentos A\* | 2 | 12 |
 
 As colisões foram todas **encostadas do robô ou do tutor em obstáculos desconhecidos**
-colocados pelo benchmark, durante o desvio local. **Nenhuma colisão nem quase-colisão com
-veículo** aconteceu: a zona varrida e o freio de emergência seguraram os infratores.
-A única falha (viagem 8 da seed 7) foi `SEM_ROTA`: depois do replanejamento, o obstáculo
-sorteado, já inflado no C-Space, fechou a passagem da calçada, e o A\* concluiu que não havia
-rota segura. O robô parou em vez de arriscar.
+colocados pelo benchmark, durante o desvio local. **Nenhuma colisão com veículo**
+aconteceu. A única quase-colisão (viagem 6 da seed 1) foi um **infrator** que avançou o
+vermelho durante a travessia: a zona varrida dele atingiu o tutor, o robô entrou em
+`FREIO_EMERGENCIA` e o carro passou sem encostar.
 
 ### 5.2 Reprodutibilidade e por que as seeds diferem
 * O simulador usa **um único gerador pseudoaleatório** (`random.Random(seed)`) para tudo:
@@ -185,8 +185,8 @@ rota segura. O robô parou em vez de arriscar.
 * Seeds diferentes geram **sequências diferentes**, ou seja, **cenários diferentes**:
   outros destinos, outra fase do semáforo quando o robô chega ao meio-fio (a espera pode
   ir de 0 a ≈ 15 s e domina o tempo médio), outros obstáculos (alguns caem bem no caminho
-  e geram oscilação no desvio, como os 33 alertas da viagem 4 da seed 1, e um chegou a
-  bloquear a calçada na viagem 8 da seed 7) e outro tráfego. Com 20 viagens a variância
+  e geram oscilação no desvio, como os 142 alertas e 10 replanejamentos da viagem 4 da
+  seed 7) e outro tráfego, com infratores aparecendo em momentos diferentes. Com 20 viagens a variância
   amostral é alta. Para comparar versões do código o certo é rodar **várias seeds** e
   reportar média ± desvio.
 
@@ -195,9 +195,9 @@ rota segura. O robô parou em vez de arriscar.
 e replanejar o A\* logo em seguida (replanejamento incremental, estilo D\* Lite), em vez de
 esperar 3,5 s preso no desvio local.**
 
-* **Deve melhorar**: **colisões** (as 7 registradas foram justamente contra obstáculos
+* **Deve melhorar**: **colisões** (as 11 registradas foram justamente contra obstáculos
   desconhecidos durante o desvio reativo), **alertas vermelhos** (some a oscilação
-  NAVEGANDO ⇄ DESVIO_LOCAL: 40 na seed 1 e 46 na seed 7) e o tempo das viagens afetadas.
+  NAVEGANDO ⇄ DESVIO_LOCAL: 69 na seed 1 e 226 na seed 7) e o tempo das viagens afetadas.
 * **Pode piorar**: o número de **replanejamentos** e o custo de CPU por quadro. A rota pode
   ficar um pouco **mais longa** (maior distância média), porque o obstáculo inflado em
   30–38 px fecha passagens estreitas. E se o LiDAR tiver um falso positivo que passe pela
@@ -206,6 +206,3 @@ esperar 3,5 s preso no desvio local.**
 Alternativa mais simples: aumentar `DIST_DESVIO_DESCONHECIDO` de 58 para 80 px. Isso reduz
 colisões, mas aumenta os alertas e o tempo médio, porque o robô passa a reagir mais cedo e
 com mais frequência.
-
-
-   do benchmark.
