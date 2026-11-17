@@ -1,0 +1,32 @@
+=== DOG-IA V2 — BENCHMARK headless: 20 viagens, seed=1 ===
+  #  origem    -> destino   result.    tempo   dist  col quase freio alert repl obs+
+  1  Casa      -> Farmácia  OK          6.6s    881    0     0     0     0    0    0
+  2  Farmácia  -> Padaria   OK         19.1s    453    0     0     0     0    0    1
+  3  Padaria   -> Farmácia  OK          4.2s    462    0     0     0     0    0    2
+  4  Farmácia  -> Mercado   OK          9.9s    707    2     0     0    33    1    1
+  5  Mercado   -> Farmácia  OK          5.0s    550    1     0     0     4    0    2
+  6  Farmácia  -> Casa      OK          7.0s    894    0     0     0     0    0    2
+  7  Casa      -> Farmácia  OK         20.2s    880    0     0     0     0    0    1
+  8  Farmácia  -> Casa      OK          7.0s    892    0     0     0     0    0    2
+  9  Casa      -> Farmácia  OK         16.0s    879    0     0     0     0    0    0
+ 10  Farmácia  -> Padaria   OK          4.0s    453    0     0     0     0    0    1
+ 11  Padaria   -> Farmácia  OK         18.9s    462    0     0     0     0    0    1
+ 12  Farmácia  -> Mercado   OK          4.2s    541    0     0     0     0    0    1
+ 13  Mercado   -> Casa      OK         21.3s   1266    0     0     0     0    0    0
+ 14  Casa      -> Farmácia  OK         20.6s    879    0     0     0     0    0    2
+ 15  Farmácia  -> Mercado   OK          4.1s    542    0     0     0     0    0    2
+ 16  Mercado   -> Padaria   OK         18.6s    855    0     0     0     0    0    1
+ 17  Padaria   -> Farmácia  OK          4.3s    463    0     0     0     0    0    0
+ 18  Farmácia  -> Casa      OK         21.4s    892    0     0     0     0    0    2
+ 19  Casa      -> Mercado   OK         23.1s   1256    0     0     0     0    0    1
+ 20  Mercado   -> Casa      OK         23.1s   1275    2     0     0     3    0    2
+--------------------------------------------------------------------------------------
+Taxa de sucesso.......: 20/20 (100.0%)
+Tempo médio (sucesso).: 12.93 s
+Distância média.......: 774 px
+Colisões..............: 5
+Quase-colisões........: 0
+Freios de emergência..: 0
+Alertas vermelhos.....: 40
+Replanejamentos A*....: 1
+Tempo simulado total..: 258.6 s
