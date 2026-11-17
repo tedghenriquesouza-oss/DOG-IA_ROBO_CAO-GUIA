@@ -53,6 +53,3 @@ python dog_ia_v2.py --benchmark 5 --seed 1 --trace
   temporal `deque(maxlen=3)` e predição por **zona varrida** (Δt = 1 s) que aciona `FREIO_EMERGENCIA`.
 * **Marco 4**: tutor como entidade própria no arnês (`GUIA = 42 px`), com redução de velocidade
   quando a tensão passa de 10 px. Bipes estéreo com pan de −1 a +1, métricas e `--benchmark`.
->
-> Projeto da disciplina com o prof. Flavio Santarelli. Equipe: @… @… @…
-> #InteligenciaArtificial #Acessibilidade #Robotica #Python #Inclusao
