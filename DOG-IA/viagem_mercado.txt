@@ -1,8 +1,8 @@
 === Viagem headless Casa -> Mercado (seed=1) ===
 [t=   0.00s] PARADO -> PLANEJANDO | destino 'Mercado' selecionado
-[t=   0.00s] PLANEJANDO -> NAVEGANDO | rota A* com 125 nós (custo 973), 1 travessia(s)
-[t=   3.92s] NAVEGANDO -> AGUARDANDO_SINAL | chegou ao meio-fio da faixa (semáforo: PEDESTRE)
-[t=   3.93s] AGUARDANDO_SINAL -> ATRAVESSANDO | fase PEDESTRE com 4.5s restantes > 2.44s e zona varrida livre
-[t=   5.80s] ATRAVESSANDO -> NAVEGANDO | travessia concluída: robô e tutor de volta à calçada
-[t=   9.02s] NAVEGANDO -> DESTINO_ALCANCADO | distância ao destino < 18 px
-Resultado: OK | tempo 9.0s | distância 1254px | freios 0 | colisões 0 | quase 0
+[t=   0.00s] PLANEJANDO -> NAVEGANDO | rota A* com 115 nós (custo 1195), 1 travessia(s)
+[t=   4.05s] NAVEGANDO -> AGUARDANDO_SINAL | chegou ao meio-fio da faixa (semáforo: PEDESTRE)
+[t=   4.07s] AGUARDANDO_SINAL -> ATRAVESSANDO | fase PEDESTRE com 4.3s restantes > 2.44s e zona varrida livre
+[t=   5.93s] ATRAVESSANDO -> NAVEGANDO | travessia concluída: robô e tutor de volta à calçada
+[t=   8.70s] NAVEGANDO -> DESTINO_ALCANCADO | distância ao destino < 18 px
+Resultado: OK | tempo 8.7s | distância 1208px | freios 0 | colisões 0 | quase 0
