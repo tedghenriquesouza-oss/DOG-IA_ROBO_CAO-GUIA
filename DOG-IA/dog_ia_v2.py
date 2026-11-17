@@ -574,9 +574,9 @@ class AudioEstereo:
 def criar_cenario():
     """Obstáculos urbanos (solo, suspensos) + limites/edificações do mapa."""
     obs = [
-        {"rect": pygame.Rect(230, 85, 45, 75), "tipo": "solo", "nome": "Banca / Hidrante"},
-        {"rect": pygame.Rect(460, 160, 32, 32), "tipo": "solo", "nome": "Poste de Luz"},
-        {"rect": pygame.Rect(380, 460, 40, 40), "tipo": "solo", "nome": "Lixeira Urbana"},
+        {"rect": pygame.Rect(215, 130, 45, 75), "tipo": "solo", "nome": "Banca / Hidrante"},
+        {"rect": pygame.Rect(612, 527, 32, 32), "tipo": "solo", "nome": "Poste de Luz"},
+        {"rect": pygame.Rect(288, 523, 40, 40), "tipo": "solo", "nome": "Lixeira Urbana"},
         {"rect": pygame.Rect(350, 75, 85, 65), "tipo": "suspenso", "nome": "Copa de Árvore"},
         # Edificações / limites (canteiros e bordas do mapa)
         {"rect": pygame.Rect(0, 0, AREA_MAPA_LARGURA, 28), "tipo": "edificacao", "nome": "Fachadas Norte"},
@@ -981,7 +981,8 @@ class Simulacao:
         v_des = min(v_des, 2.5 * dist_goal + 20)
 
         # ===== Camada 2: evasão reativa local (LiDAR) =====
-        if r.estado in (NAVEGANDO, DESVIO_LOCAL):
+        # (na travessia, o desvio local volta a valer assim que o robô sobe na calçada)
+        if r.estado in (NAVEGANDO, DESVIO_LOCAL) or (r.estado == ATRAVESSANDO and not em_banda_rua(r.y)):
             L = r.leituras_lidar
             terco = r.num_raios // 3
             esquerda, centro, direita = L[:terco], L[terco:2 * terco], L[2 * terco:]
@@ -1475,7 +1476,7 @@ def sortear_obstaculo(sim, destino_pos):
             x, y = sim.rng.uniform(40, AREA_MAPA_LARGURA - 40), sim.rng.uniform(60, RUA_Y - 40)
         else:
             x, y = sim.rng.uniform(40, AREA_MAPA_LARGURA - 40), sim.rng.uniform(RUA_Y + RUA_ALTURA + 40, ALTURA - 60)
-        if FAIXA_X - 50 < x < FAIXA_X + FAIXA_LARGURA + 50 and (abs(y - RUA_Y) < 50 or abs(y - RUA_Y - RUA_ALTURA) < 50):
+        if FAIXA_X - 60 < x < FAIXA_X + FAIXA_LARGURA + 60 and (abs(y - RUA_Y) < 90 or abs(y - RUA_Y - RUA_ALTURA) < 90):
             continue  # não bloqueia a cabeceira da faixa
         longe = all(math.hypot(x - p[0], y - p[1]) > 80 for _, p in DESTINOS.values())
         longe = longe and math.hypot(x - destino_pos[0], y - destino_pos[1]) > 80
